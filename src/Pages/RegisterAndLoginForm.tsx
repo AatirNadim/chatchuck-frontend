@@ -14,11 +14,11 @@ const RegisterAndLoginForm = () => {
   const [isLoginOrRegister, setIsLoginOrRegister] = useState<LoginOrRegister>(
     LoginOrRegister.Login
   );
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : any) => {
     try {
       e.preventDefault();
       console.log(isLoginOrRegister);
-      const { data } = await axios.post("dsd", { username, password });
+      const { data } = await axios.post(isLoginOrRegister, { username, password });
       setLoggedInUsername(username);
       setId(data.id);
       console.log(data);
@@ -27,7 +27,7 @@ const RegisterAndLoginForm = () => {
     }
   };
   return (
-    <div className="bg-blue-50 h-screen flex items-center">
+    <div className="bg-blue-50 h-screen flex items-center !cursor-default">
       <form className="w-64 mx-auto mb-12" onSubmit={handleSubmit}>
         <input
           value={username}

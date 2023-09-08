@@ -1,6 +1,41 @@
+@font-face {
+  font-family: "AirbnbCereal";
+  src: local("AirbnbCereal"),
+    url("./fonts/AirbnbCereal_W_XBd.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AirbnbCereal";
+  src: local("AirbnbCereal"),
+    url("./fonts/AirbnbCereal_W_Bd.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AirbnbCereal";
+  src: local("AirbnbCereal"),
+    url("./fonts/AirbnbCereal_W_Md.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AirbnbCereal";
+  src: local("AirbnbCereal"),
+    url("./fonts/AirbnbCereal_W_Lt.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  font-family: "AirbnbCereal", sans-serif;
+}
+
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
