@@ -1,5 +1,5 @@
 import React from "react";
-import ChatSvg from "./assets/chat-line-svgrepo-com.svg";
+import ChatSvg from "./assets/SVGs/chat-line-svgrepo-com.svg";
 
 const Logo = () => {
   return (

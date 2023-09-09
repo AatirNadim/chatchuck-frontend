@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import Logo from '../Logo';
-import Contact from '../Contaxt';
+import Contact from '../components/Contaxt';
 import { UserContext, UserContextType } from '../Contexts/UserContext';
 
 const Chat = () => {
