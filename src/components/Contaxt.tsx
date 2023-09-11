@@ -9,7 +9,7 @@ interface ContactProps {
   online: boolean;
 }
 
-const Contact: React.FC<ContactProps>  =({id,username,onClick,selected,online}) => {
+const Contact: React.FC<ContactProps>  =({ id, username, onClick, selected, online }) => {
   return (
     <div key={id} onClick={() => onClick(id)}
          className={"border-b border-gray-100 flex items-center gap-2 cursor-pointer "+(selected ? 'bg-blue-50' : '')}>

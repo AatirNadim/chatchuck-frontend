@@ -8,10 +8,9 @@ import ChatTemp from "./Pages/ChatTemp.js";
 export default function Routes() {
   const {username, id} = useContext(UserContext) as UserContextType;
 
-  // if (username) {
+  if (username) {
     return <ChatTemp />
-    return <Chat />;
-  // }
+  }
 
   return (  
     // <RegisterAndLoginForm />

@@ -14,6 +14,8 @@ const Chat = () => {
   const { username, id, setId, setUsername } = useContext(UserContext) as UserContextType;
   const divUnderMessages = useRef();
 
+  
+
   return (
     <div className="flex h-screen">
       <div className="bg-white w-1/3 flex flex-col">

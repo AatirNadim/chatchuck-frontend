@@ -21,15 +21,13 @@ const Temp = () => {
     try {
       e.preventDefault();
       console.log(isLoginOrRegister);
-      const { data } = await axios.post(isLoginOrRegister, { username, password })
+      const { data } = await axios.post(isLoginOrRegister, { username, password });
+      // const res = await axios.get('/test');
+      // await axios.get('/test');
       console.log(data)
-      // const { data } = await axios.post(`http://localhost:5001/${isLoginOrRegister}`, {
-      //   username,
-      //   password,
-      // });
       setLoggedInUsername(username);
       setId(data.id);
-      // console.log(data);
+      // console.log(resp.headers);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +42,7 @@ const Temp = () => {
             </div>
             <div className="font-bold text-5xl text-one">ChatChuck</div>
           </div>
-          <div className="font-semibold text-2xl text-two items-start flex flex-col gap-4 w-full">
+          <div className="font-semibold text-2xl text-[#eadbc8] items-start flex flex-col gap-4 w-full">
             <div>Connecting thoughts</div>
             <div>One tap at a time</div>
           </div>
