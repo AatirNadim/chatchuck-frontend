@@ -9,6 +9,8 @@ import axios from "axios";
 import { uniqBy } from "lodash";
 import { FileType, MessageType } from "../assets/types";
 import Contact from "../components/Contaxt";
+import Avatar from "../Avatar";
+import { checkOnline } from "../utils/functions";
 
 const ChatTemp = () => {
   const [ws, setWs] = useState<null | WebSocket>(null);
@@ -17,7 +19,7 @@ const ChatTemp = () => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [newMessageText, setNewMessageText] = useState("");
   const [messages, setMessages] = useState<MessageType[]>([] as MessageType[]);
-  const { username, id, setId, setUsername } = useContext(
+  const { username, id, setId, setUsername, setDispLoader } = useContext(
     UserContext
   ) as UserContextType;
   const divUnderMessages = useRef<HTMLDivElement | null>();
@@ -85,7 +87,6 @@ const ChatTemp = () => {
         setMessages(res.data);
       });
     } else {
-      setNewMessageText("");
       setMessages((prev) => [
         ...prev,
         {
@@ -95,6 +96,7 @@ const ChatTemp = () => {
           _id: Date.now(),
         },
       ]);
+      setNewMessageText("");
     }
   }
 
@@ -132,9 +134,15 @@ const ChatTemp = () => {
 
   useEffect(() => {
     if (selectedUserId) {
-      axios.get("/messages/" + selectedUserId).then((res) => {
+      setDispLoader(true);
+      axios.get("/message/" + selectedUserId).then((res) => {
+        console.log('messages being set --> \n\n', res.data, 'selected user id --> ', selectedUserId)
         setMessages(res.data);
-      });
+      }).catch(err => {
+        console.error(err)
+        setMessages([])
+      }).finally(() => setDispLoader(false));
+      
     }
   }, [selectedUserId]);
 
@@ -170,7 +178,10 @@ const ChatTemp = () => {
               id={userId}
               online={false}
               username={offlinePeople[userId].username}
-              onClick={() => setSelectedUserId(userId)}
+              onClick={() => {
+                setSelectedUserId(userId);
+                console.log("user id clicked --> ", userId);
+              }}
               selected={userId === selectedUserId}
             />
           ))}
@@ -190,11 +201,26 @@ const ChatTemp = () => {
         </div>
         {/* </div> */}
       </div>
-      <div className="w-3/4 flex flex-col h-full">
+      <div className="w-3/4 flex flex-col h-full p-2">
         {!!selectedUserId ? (
           <>
             {/* the chat profile info */}
-            <div className="h-12 flex flex-row justify-end"></div>
+            <div className="h-12 flex flex-row justify-start gap-4 items-center border-b-2 border-four">
+              <Avatar
+                online={checkOnline(onlinePeopleExclOurUser, selectedUserId)}
+                userId={selectedUserId}
+                username={`${
+                  checkOnline(onlinePeopleExclOurUser, selectedUserId)
+                    ? onlinePeopleExclOurUser[selectedUserId]
+                    : offlinePeople[selectedUserId].username}`}
+                key={selectedUserId}
+              />
+              <div className="font-semibold text-xl text-four">
+                {checkOnline(onlinePeopleExclOurUser, selectedUserId)
+                  ? onlinePeopleExclOurUser[selectedUserId]
+                  : offlinePeople[selectedUserId].username}
+              </div>
+            </div>
             {/* chat messages for the user and selected profile */}
             <div className="">
               {messagesWithoutDupes.map((message) => (
@@ -204,10 +230,10 @@ const ChatTemp = () => {
                 >
                   <div
                     className={
-                      "text-left inline-block p-2 my-2 rounded-md text-sm " +
+                      "text-left inline-block p-2 my-2 rounded-xl text-base " +
                       (message.sender === id
-                        ? "bg-blue-500 text-white"
-                        : "bg-white text-gray-500")
+                        ? "bg-two text-four"
+                        : "bg-four text-one")
                     }
                   >
                     {message.text}
@@ -243,24 +269,25 @@ const ChatTemp = () => {
             </div>
             {/* input new text for chat */}
             {/* <form onSubmit={() => console.log('form submitted')} > */}
-              <form className="mt-auto h-16 flex flex-row justify-around items-center p-4 gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log('form submitted')
-                }}>
-                <input
-                  className="flex-1 h-12 outline-none border-2 border-four rounded-xl px-4 bg-one "
-                  type="text"
-                  placeholder="Type a message..."
-                />
-                <label className="p-4 rounded-full bg-four flex items-center justify-center cursor-pointer">
-                  <input type="file" className="hidden" />
-                  <PiLinkSimpleBold size={"20px"} className="text-white" />
-                </label>
-                <button type="submit" className="p-4 rounded-full bg-four">
-                  <BiSolidSend size={"20px"} className="text-white" />
-                </button>
-              </form>{" "}
+            <form
+              className="mt-auto h-16 flex flex-row justify-around items-center p-4 gap-4"
+              onSubmit={sendMessage}
+            >
+              <input
+                className="flex-1 h-12 outline-none border-2 border-four rounded-xl px-4 bg-one "
+                type="text"
+                placeholder="Type a message..."
+                value={newMessageText}
+                onChange={ev => setNewMessageText(ev.target.value)}
+              />
+              <label className="p-4 rounded-full bg-four flex items-center justify-center cursor-pointer">
+                <input type="file" className="hidden" onChange={sendFile} />
+                <PiLinkSimpleBold size={"20px"} className="text-white" />
+              </label>
+              <button type="submit" className="p-4 rounded-full bg-four">
+                <BiSolidSend size={"20px"} className="text-white" />
+              </button>
+            </form>{" "}
             {/* </form> */}
           </>
         ) : (

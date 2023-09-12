@@ -2,9 +2,12 @@ interface AvatarProps {
   userId: string;
   username: string;
   online: boolean;
+  mainChat?: boolean;
 }
 
-const Avatar : React.FC<AvatarProps> = ({ userId, username, online }) => {
+const Avatar : React.FC<AvatarProps> = ({ userId, username, online, mainChat }) => {
+  // console.log('user id in avatar --> ', userId, 'username --> ', username)
+
   const colors = [
     "bg-teal-200",
     "bg-red-200",
@@ -23,10 +26,10 @@ const Avatar : React.FC<AvatarProps> = ({ userId, username, online }) => {
   return (
     <div className={"w-8 h-8 relative rounded-full flex items-center " + color}>
       <div className="text-center w-full opacity-70">{username[0] || 'test'}</div>
-      {online && (
+      {!mainChat && online && (
         <div className="absolute w-3 h-3 bg-green-400 bottom-0 right-0 rounded-full border border-white"></div>
       )}
-      {!online && (
+      {!mainChat && !online && (
         <div className="absolute w-3 h-3 bg-gray-400 bottom-0 right-0 rounded-full border border-white"></div>
       )}
     </div>

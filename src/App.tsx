@@ -1,6 +1,7 @@
 import axios from "axios";
 import {UserContextProvider} from "./Contexts/UserContext";
 import Routes from "./Routes";
+import './App.css';
 
 function App() {
   axios.defaults.baseURL = 'http://localhost:5001';
